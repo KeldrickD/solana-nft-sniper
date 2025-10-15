@@ -20,6 +20,9 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
+
+      - name: Set MOCK_TENSOR for tests
+        run: echo "MOCK_TENSOR=true" >> $GITHUB_ENV
         
       - name: Run linting
         run: npm run lint
@@ -47,6 +50,9 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
+
+      - name: Set MOCK_TENSOR for build
+        run: echo "MOCK_TENSOR=true" >> $GITHUB_ENV
         
       - name: Build
         run: npm run build
