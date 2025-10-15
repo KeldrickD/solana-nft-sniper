@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  nft-sniping-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nft-sniping-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./nft-sniping-bot.log:/app/nft-sniping-bot.log
+    environment:
+      - NODE_ENV=production 
