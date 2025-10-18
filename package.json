@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js && node src/index.js",
+    "dev": "ts-node src/index.ts && node src/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -14,15 +14,16 @@
     "lint:fix": "eslint src --ext .ts --fix"
   },
   "dependencies": {
-    "@solana/web3.js": "^1.87.6",
     "@project-serum/anchor": "^0.26.0",
+    "@solana/web3.js": "^1.87.6",
+    "@tensor-oss/tensorswap-sdk": "^4.5.0",
     "bs58": "^5.0.0",
     "dotenv": "^16.3.1",
     "winston": "^3.10.0"
   },
   "devDependencies": {
-    "@types/node": "^20.9.0",
     "@types/jest": "^29.5.4",
+    "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.50.0",
@@ -31,4 +32,4 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
-} 
+}

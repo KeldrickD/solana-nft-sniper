@@ -1,4 +1,5 @@
 import { Connection, PublicKey, Transaction, sendAndConfirmTransaction, Keypair } from '@solana/web3.js';
+import { AnchorProvider, Wallet } from '@project-serum/anchor';
 import { Logger } from 'winston';
 import { NFTListing, ApiResponse } from './interfaces';
 import { retryOperation, RetryOptions } from '../utils/retry';
@@ -36,12 +37,33 @@ export class TensorService {
       logger: this.logger
     };
 
-    // Dynamic import to avoid hard dependency at install time
+    // Dynamic import to use maintained Tensor SDK
     return retryOperation(
       async () => {
-        const moduleName: string = '@tensor-oss/sdk';
-        const tensorAny: any = await import(moduleName as unknown as string);
-        return tensorAny.Tensor.init(this.connection);
+        const { TensorSwapSDK } = await import('@tensor-oss/tensorswap-sdk');
+        const provider = new AnchorProvider(
+          this.connection as any,
+          new Wallet(this.wallet) as any,
+          { commitment: 'confirmed' } as any
+        );
+        const swapSdk = new TensorSwapSDK({ provider });
+
+        // Adapter to current bot expectations; implement real calls later
+        return {
+          getActiveListings: async (_args: { collection: PublicKey }) => {
+            this.logger.warn('Tensor listings via tensorswap-sdk not implemented yet; returning empty list');
+            return [] as any[];
+          },
+          getCollectionStats: async (_collectionKey: PublicKey) => {
+            this.logger.warn('Tensor stats via tensorswap-sdk not implemented yet');
+            return { floor: { sol: undefined } } as any;
+          },
+          createBuyTx: async (_params: any) => {
+            this.logger.warn('Tensor buy via tensorswap-sdk not implemented yet; returning empty Transaction');
+            return new Transaction();
+          },
+          _client: swapSdk,
+        } as any;
       },
       retryOptions
     );
